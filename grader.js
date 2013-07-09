@@ -58,7 +58,6 @@ var checkHtmlFile = function (htmlfile, checksfile) {
 };
 
 var checkURL = function(url, checksfile){
-    console.log(url);
     restler.get(url).on('complete',function(result){
         console.log(result);
         var $ = cheerio.load(result)
@@ -68,14 +67,9 @@ var checkURL = function(url, checksfile){
             var present = $(checks[ii]).length > 0;
             out[checks[ii]] = present;
         }
-        return out;
+        JSON.stringify(out);
     })
-
 };
-
-
-
-
 
 var clone = function (fn) {
     // Workaround for commander.js issue.
@@ -92,14 +86,12 @@ if (require.main == module) {
         .option('-u, --url <url>', 'URL to index.html')
         .parse(process.argv);
 
-    var checkJson;
     if (program.url) {
-        checkJson = checkURL(program.url, program.checks);
+       checkURL(program.url, program.checks);
     } else {
-        checkJson = checkHtmlFile(program.file, program.checks);
+        console.log(JSON.stringify(checkHtmlFile(program.file, program.checks), null, 4));
     }
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
+
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
