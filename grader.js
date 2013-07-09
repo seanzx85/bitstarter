@@ -59,7 +59,6 @@ var checkHtmlFile = function (htmlfile, checksfile) {
 
 var checkURL = function(url, checksfile){
     restler.get(url).on('complete',function(result){
-        console.log(result);
         var $ = cheerio.load(result)
         var checks = loadChecks(checksfile).sort();
         var out = {};
@@ -67,7 +66,9 @@ var checkURL = function(url, checksfile){
             var present = $(checks[ii]).length > 0;
             out[checks[ii]] = present;
         }
-        JSON.stringify(out);
+	console.log(JSON.stringify(out));
+    }).on('error', function(error){
+	console.log(error);
     })
 };
 
