@@ -66,11 +66,15 @@ var checkURL = function(url, checksfile){
             var present = $(checks[ii]).length > 0;
             out[checks[ii]] = present;
         }
-	console.log(JSON.stringify(out));
+        outputFile(JSON.stringify(out));
     }).on('error', function(error){
-	console.log(error);
+	    console.log(error);
     })
 };
+
+var outputFile = function(data){
+    fs.writeFileSync('output.txt', data);
+}
 
 var clone = function (fn) {
     // Workaround for commander.js issue.
@@ -90,7 +94,7 @@ if (require.main == module) {
     if (program.url) {
        checkURL(program.url, program.checks);
     } else {
-        console.log(JSON.stringify(checkHtmlFile(program.file, program.checks), null, 4));
+        outputFile(JSON.stringify(checkHtmlFile(program.file, program.checks), null, 4));
     }
 
 } else {
