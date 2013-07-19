@@ -3,7 +3,9 @@ var fs = require('fs');
 
 var app = express.createServer(express.logger());
 
-var index = new Buffer(fs.readFileSync('index.html'), 'utf-8');
+app.use(express.static(__dirname + '/'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
 
 app.get('/', function(request, response) {
   response.send(index.toString());
